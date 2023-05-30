@@ -12,11 +12,12 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'My First App Flutter',
       theme: ThemeData(
-        colorScheme:
-            ColorScheme.fromSeed(seedColor: Color.fromARGB(255, 201, 178, 79)),
+        colorScheme: ColorScheme.fromSeed(
+            seedColor: const Color.fromARGB(255, 201, 178, 79)),
         useMaterial3: true,
       ),
-      home: const MyHomePage(title: 'Home'),
+      home: const Center(child: MyHomePage(title: 'Home')),
+      debugShowCheckedModeBanner: false,
     );
   }
 }
