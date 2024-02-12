@@ -20,6 +20,12 @@ class ServiceProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  //metodo para remocao da tarefa
+  void removeTask(int index) {
+    _todoItems.removeAt(index);
+    notifyListeners();
+  }
+
   //metodo para editar a tarefa
   void editTask(TaskModel oldTask, TaskModel newTask) {
     final index = _todoItems.indexOf(oldTask);

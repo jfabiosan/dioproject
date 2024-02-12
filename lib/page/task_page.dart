@@ -1,7 +1,8 @@
-import 'package:dioproject/dialog/edit_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import '/dialog/edit_dialog.dart';
 import '/dialog/add_dialog.dart';
+import '/dialog/confirm_del_dialog.dart'; // Importe o arquivo confirm_del_dialog.dart
 import '/service_provider.dart';
 import '/model/task_model.dart';
 
@@ -14,24 +15,48 @@ class TaskPage extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Lista de Tarefas'),
         actions: const [
-          //metodo switch da Appbar
           TaskSwitch(),
         ],
       ),
       body: Consumer<ServiceProvider>(
         builder: (context, todoProvider, child) {
-          // variável showCompletedTasks determinar se as tarefas concluídas sao exibidas
           final bool showCompletedTasks = todoProvider.switchValue;
-          final List<TaskModel> visibleTask = showCompletedTasks
+          final List<TaskModel> visibleTasks = showCompletedTasks
               ? todoProvider.todoItems
               : todoProvider.todoItems
                   .where((task) => !task.completed)
                   .toList();
+
           return ListView.builder(
-            itemCount: visibleTask.length,
+            itemCount: visibleTasks.length,
             itemBuilder: (context, index) {
-              final task = visibleTask[index];
-              return TaskListItem(task: task);
+              final task = visibleTasks[index];
+              return Dismissible(
+                key: Key(task.id), // Chave única para o Dismissible
+                direction: DismissDirection.horizontal,
+                background: Container(
+                  color: Colors.red,
+                  alignment: Alignment.centerRight,
+                  child: const Icon(
+                    Icons.delete,
+                    color: Colors.white,
+                  ),
+                ),
+                confirmDismiss: (direction) async {
+                  return await showDialog<bool>(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return ConfirmDelDialog(); // Remove a tarefa da lista
+                        },
+                      );
+                    },
+                  );
+                },
+                onDismissed: (direction) {
+                  todoProvider.removeTask(index); // Remove a tarefa da lista
+                },
+                child: TaskListItem(task: task),
+              );
             },
           );
         },
