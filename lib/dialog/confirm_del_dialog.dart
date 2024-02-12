@@ -14,8 +14,7 @@ class ConfirmDelDialog extends StatelessWidget {
       actions: <Widget>[
         TextButton(
           onPressed: () {
-            Navigator.of(context)
-                .pop(false); // Fecha o diálogo sem excluir a tarefa
+            Navigator.of(context).pop(); // Fecha o diálogo sem excluir a tarefa
           },
           child: const Text('Cancelar'),
         ),
@@ -23,9 +22,9 @@ class ConfirmDelDialog extends StatelessWidget {
           onPressed: () {
             onDeleteConfirmed(); // Chama a função para excluir a tarefa
             Navigator.of(context)
-                .pop(true); // Fecha o diálogo após excluir a tarefa
+                .pop(); // Fecha o diálogo após excluir a tarefa
           },
-          child: const Text('Confirmar'),
+          child: const Text('Excluir'),
         ),
       ],
     );
