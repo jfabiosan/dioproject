@@ -15,6 +15,7 @@ class MyApp extends StatelessWidget {
     return ChangeNotifierProvider(
       create: (context) => ServiceProvider(),
       child: MaterialApp(
+        debugShowCheckedModeBanner: false,
         title: 'Lista de Tarefas',
         theme: ThemeData(
           primarySwatch: Colors.blue,

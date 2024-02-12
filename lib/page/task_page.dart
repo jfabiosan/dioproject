@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import '/dialog/help_dialog.dart';
 import '/dialog/edit_dialog.dart';
 import '/dialog/add_dialog.dart';
 import '/dialog/confirm_del_dialog.dart'; // Importe o arquivo confirm_del_dialog.dart
@@ -13,9 +14,26 @@ class TaskPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        toolbarHeight: 70.0,
+        shape: const ContinuousRectangleBorder(
+          borderRadius: BorderRadius.only(
+            bottomLeft: Radius.circular(30),
+            bottomRight: Radius.circular(30),
+          ),
+        ),
+        backgroundColor: Colors.blueGrey,
         title: const Text('Lista de Tarefas'),
-        actions: const [
-          TaskSwitch(),
+        actions: [
+          IconButton(
+            onPressed: () {
+              showDialog(
+                context: context,
+                builder: (context) => const HelpDialog(),
+              );
+            },
+            icon: const Icon(Icons.help),
+          ),
+          const TaskSwitch(),
         ],
       ),
       body: Consumer<ServiceProvider>(
