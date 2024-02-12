@@ -22,7 +22,13 @@ class TaskPage extends StatelessWidget {
           ),
         ),
         backgroundColor: Colors.blueGrey,
-        title: const Text('Lista de Tarefas'),
+        title: const Text(
+          'Notas',
+          style: TextStyle(
+            fontSize: 28,
+            color: Colors.white,
+          ),
+        ),
         actions: [
           IconButton(
             onPressed: () {
@@ -36,53 +42,69 @@ class TaskPage extends StatelessWidget {
           const TaskSwitch(),
         ],
       ),
-      body: Consumer<ServiceProvider>(
-        builder: (context, todoProvider, child) {
-          final bool showCompletedTasks = todoProvider.switchValue;
-          final List<TaskModel> visibleTasks = showCompletedTasks
-              ? todoProvider.todoItems
-              : todoProvider.todoItems
-                  .where((task) => !task.completed)
-                  .toList();
-
-          return ListView.builder(
-            itemCount: visibleTasks.length,
-            itemBuilder: (context, index) {
-              final task = visibleTasks[index];
-              return Dismissible(
-                key: Key(task.title), // Chave única para o Dismissible
-                direction: DismissDirection.horizontal,
-                background: Container(
-                  color: Colors.red,
-                  alignment: Alignment.centerRight,
-                  child: const Icon(
-                    Icons.delete,
-                    color: Colors.white,
+      body: Padding(
+        padding: const EdgeInsets.only(bottom: 90),
+        child: Consumer<ServiceProvider>(
+          builder: (context, todoProvider, child) {
+            final bool showCompletedTasks = todoProvider.switchValue;
+            final List<TaskModel> visibleTasks = showCompletedTasks
+                ? todoProvider.todoItems
+                : todoProvider.todoItems
+                    .where((task) => !task.completed)
+                    .toList();
+            if (visibleTasks.isEmpty) {
+              return const Center(
+                child: Card(
+                  margin: EdgeInsets.all(40),
+                  child: Text(
+                    'Clique no botão + para inserir a primeira tarefa.',
+                    style: TextStyle(fontSize: 20),
+                    textAlign: TextAlign.center,
                   ),
                 ),
-                confirmDismiss: (direction) async {
-                  return await showDialog<bool>(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return ConfirmDelDialog(
-                        onDeleteConfirmed: () {
-                          todoProvider
-                              .removeTask(index); // Remove a tarefa da lista
-                        },
-                      );
-                    },
-                  );
-                },
-                onDismissed: (direction) {
-                  todoProvider.removeTask(index); // Remove a tarefa da lista
-                },
-                child: TaskListItem(task: task),
               );
-            },
-          );
-        },
+            }
+
+            return ListView.builder(
+              itemCount: visibleTasks.length,
+              itemBuilder: (context, index) {
+                final task = visibleTasks[index];
+                return Dismissible(
+                  key: Key(task.title), // Chave única para o Dismissible
+                  direction: DismissDirection.horizontal,
+                  background: Container(
+                    color: Colors.red,
+                    alignment: Alignment.centerRight,
+                    child: const Icon(
+                      Icons.delete,
+                      color: Colors.white,
+                    ),
+                  ),
+                  confirmDismiss: (direction) async {
+                    return await showDialog<bool>(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return ConfirmDelDialog(
+                          onDeleteConfirmed: () {
+                            todoProvider
+                                .removeTask(index); // Remove a tarefa da lista
+                          },
+                        );
+                      },
+                    );
+                  },
+                  onDismissed: (direction) {
+                    todoProvider.removeTask(index); // Remove a tarefa da lista
+                  },
+                  child: TaskListItem(task: task),
+                );
+              },
+            );
+          },
+        ),
       ),
       floatingActionButton: FloatingActionButton(
+        backgroundColor: Colors.deepOrangeAccent,
         onPressed: () {
           AddDialog.show(context);
         },
@@ -101,6 +123,8 @@ class TaskSwitch extends StatelessWidget {
     return Consumer<ServiceProvider>(
       builder: (context, todoProvider, child) {
         return Switch(
+          activeColor: Colors.white,
+          activeTrackColor: Colors.deepOrangeAccent,
           value: todoProvider.switchValue,
           onChanged: (value) {
             todoProvider.updateSwitchValue(value);
@@ -119,29 +143,36 @@ class TaskListItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListTile(
-      title: Text(task.title),
-      //Switch das tarefas
-      trailing: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          IconButton(
-            onPressed: () {
-              showDialog(
-                context: context,
-                builder: (_) => EditDialog(task: task),
-              );
-            },
-            icon: const Icon(Icons.edit),
-          ),
-          Switch(
-            value: task.completed,
-            onChanged: (value) {
-              Provider.of<ServiceProvider>(context, listen: false)
-                  .updateTaskCompletion(task, value);
-            },
-          ),
-        ],
+    return Card(
+      child: ListTile(
+        title: Text(
+          task.title,
+          style: const TextStyle(fontSize: 20),
+        ),
+        trailing: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            IconButton(
+              onPressed: () {
+                showDialog(
+                  context: context,
+                  builder: (_) => EditDialog(task: task),
+                );
+              },
+              icon: const Icon(Icons.edit),
+            ),
+            //Switch das tarefas
+            Switch(
+              activeColor: Colors.white,
+              activeTrackColor: Colors.deepOrangeAccent,
+              value: task.completed,
+              onChanged: (value) {
+                Provider.of<ServiceProvider>(context, listen: false)
+                    .updateTaskCompletion(task, value);
+              },
+            ),
+          ],
+        ),
       ),
     );
   }
