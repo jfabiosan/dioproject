@@ -32,7 +32,7 @@ class TaskPage extends StatelessWidget {
             itemBuilder: (context, index) {
               final task = visibleTasks[index];
               return Dismissible(
-                key: Key(task.id), // Chave única para o Dismissible
+                key: Key(task.title), // Chave única para o Dismissible
                 direction: DismissDirection.horizontal,
                 background: Container(
                   color: Colors.red,
@@ -46,7 +46,10 @@ class TaskPage extends StatelessWidget {
                   return await showDialog<bool>(
                     context: context,
                     builder: (BuildContext context) {
-                      return ConfirmDelDialog(); // Remove a tarefa da lista
+                      return ConfirmDelDialog(
+                        onDeleteConfirmed: () {
+                          todoProvider
+                              .removeTask(index); // Remove a tarefa da lista
                         },
                       );
                     },
