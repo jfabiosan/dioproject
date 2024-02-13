@@ -29,7 +29,7 @@ class EditDialog extends StatelessWidget {
         TextButton(
           child: const Text('Salvar'),
           onPressed: () {
-            final String newTitle = textFieldController.text;
+            final String newTitle = textFieldController.text.trim();
             if (newTitle.isNotEmpty) {
               // Atualize a tarefa com o novo título
               final updateTask = TaskModel(

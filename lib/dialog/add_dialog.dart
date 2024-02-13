@@ -25,7 +25,7 @@ class AddDialog {
             TextButton(
               child: const Text('Adicionar'),
               onPressed: () {
-                final String title = textFieldController.text;
+                final String title = textFieldController.text.trim();
                 if (title.isNotEmpty) {
                   final todoProvider =
                       Provider.of<ServiceProvider>(context, listen: false);

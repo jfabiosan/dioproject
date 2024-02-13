@@ -64,41 +64,47 @@ class TaskPage extends StatelessWidget {
                 ),
               );
             }
-
-            return ListView.builder(
-              itemCount: visibleTasks.length,
-              itemBuilder: (context, index) {
-                final task = visibleTasks[index];
-                return Dismissible(
-                  key: Key(task.title), // Chave única para o Dismissible
-                  direction: DismissDirection.horizontal,
-                  background: Container(
-                    color: Colors.red,
-                    alignment: Alignment.centerRight,
-                    child: const Icon(
-                      Icons.delete,
-                      color: Colors.white,
+            //Mostra barra de rolagem na lista
+            return Scrollbar(
+              thickness: 10,
+              thumbVisibility: true,
+              radius: const Radius.circular(12),
+              child: ListView.builder(
+                itemCount: visibleTasks.length,
+                itemBuilder: (context, index) {
+                  final task = visibleTasks[index];
+                  return Dismissible(
+                    key: Key(task.title), // Chave única para o Dismissible
+                    direction: DismissDirection.horizontal,
+                    background: Container(
+                      color: Colors.red,
+                      alignment: Alignment.centerRight,
+                      child: const Icon(
+                        Icons.delete,
+                        color: Colors.white,
+                      ),
                     ),
-                  ),
-                  confirmDismiss: (direction) async {
-                    return await showDialog<bool>(
-                      context: context,
-                      builder: (BuildContext context) {
-                        return ConfirmDelDialog(
-                          onDeleteConfirmed: () {
-                            todoProvider
-                                .removeTask(index); // Remove a tarefa da lista
-                          },
-                        );
-                      },
-                    );
-                  },
-                  onDismissed: (direction) {
-                    todoProvider.removeTask(index); // Remove a tarefa da lista
-                  },
-                  child: TaskListItem(task: task),
-                );
-              },
+                    confirmDismiss: (direction) async {
+                      return await showDialog<bool>(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return ConfirmDelDialog(
+                            onDeleteConfirmed: () {
+                              todoProvider.removeTask(
+                                  index); // Remove a tarefa da lista
+                            },
+                          );
+                        },
+                      );
+                    },
+                    onDismissed: (direction) {
+                      todoProvider
+                          .removeTask(index); // Remove a tarefa da lista
+                    },
+                    child: TaskListItem(task: task),
+                  );
+                },
+              ),
             );
           },
         ),
