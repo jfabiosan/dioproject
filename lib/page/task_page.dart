@@ -78,7 +78,7 @@ class TaskPage extends StatelessWidget {
                     direction: DismissDirection.horizontal,
                     background: Container(
                       color: Colors.red,
-                      alignment: Alignment.centerRight,
+                      alignment: Alignment.centerLeft,
                       child: const Icon(
                         Icons.delete,
                         color: Colors.white,
