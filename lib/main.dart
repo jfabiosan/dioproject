@@ -16,7 +16,7 @@ class MyApp extends StatelessWidget {
       create: (context) => ServiceProvider(),
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        title: 'Lista de Tarefas',
+        title: 'Flash Note',
         theme: ThemeData(
           primarySwatch: Colors.blue,
         ),

@@ -1,6 +1,6 @@
 # dioproject
 
-A new Flutter project.
+Projeto feito em Flutter para uso pesoal e para estudar a linguagem dart e Framework Flutter.
 
 ## Getting Started
 

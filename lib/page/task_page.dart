@@ -23,7 +23,7 @@ class TaskPage extends StatelessWidget {
         ),
         backgroundColor: Colors.blueGrey,
         title: const Text(
-          'Notas',
+          'Flash Note',
           style: TextStyle(
             fontSize: 28,
             color: Colors.white,
@@ -57,7 +57,7 @@ class TaskPage extends StatelessWidget {
                 child: Card(
                   margin: EdgeInsets.all(40),
                   child: Text(
-                    'Clique no botão + para inserir a primeira tarefa.',
+                    'Clique no botão + para inserir uma nota.',
                     style: TextStyle(fontSize: 20),
                     textAlign: TextAlign.center,
                   ),
