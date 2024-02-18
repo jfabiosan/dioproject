@@ -1,7 +1,7 @@
 
 # App Lista de Tarefas
 
-Aplicando conhecimentos adquiridos na Plataforma DIO ns formação Flutter Specialist.
+Aplicando conhecimentos adquiridos na Plataforma DIO na formação Flutter Specialist.
 
 
 ## Aprendizados
