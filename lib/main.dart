@@ -1,7 +1,7 @@
+import 'package:dioproject/page/splash_page.dart';
 import 'package:dioproject/repository/database_sqflite.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'page/task_page.dart';
 import 'service_provider.dart';
 
 void main() async {
@@ -24,7 +24,7 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           primarySwatch: Colors.blue,
         ),
-        home: const TaskPage(),
+        home: const SplashPage(),
       ),
     );
   }
