@@ -1,17 +1,46 @@
-# dioproject
 
-Projeto feito em Flutter para uso pesoal e para estudar a linguagem dart e Framework Flutter.
+# App Lista de Tarefas
 
-## Getting Started
+Aplicando conhecimentos adquiridos na Plataforma DIO ns formação Flutter Specialist.
 
-This project is a starting point for a Flutter application.
 
-A few resources to get you started if this is your first Flutter project:
+## Aprendizados
+
+Widgets
+
+ListView
+
+MaterialDesign
+
+Scaffold
+
+Gerencia de estado
+
+SetState
+
+Provider
+
+Persistencia de dados
+
+Sqflite
+
+
+## Melhorias
+
+Gerencia de estado
+
+persistencia
+
+Implementação: Drawer, ButtonNavigationBar, 
+
+darkTheme, 
+
+Calendario e agenda com alarmes e 
+notificações.
+
 
 - [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
 - [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
 
 For help getting started with Flutter development, view the
 [online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
-# dioproject
