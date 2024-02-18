@@ -6,7 +6,7 @@ import '/model/task_model.dart';
 class EditDialog extends StatelessWidget {
   final TaskModel task;
 
-  const EditDialog({Key? key, required this.task}) : super(key: key);
+  const EditDialog({super.key, required this.task});
 
   @override
   Widget build(BuildContext context) {
@@ -33,6 +33,7 @@ class EditDialog extends StatelessWidget {
             if (newTitle.isNotEmpty) {
               // Atualize a tarefa com o novo título
               final updateTask = TaskModel(
+                id: task.id,
                 title: newTitle,
                 completed: task.completed,
               );

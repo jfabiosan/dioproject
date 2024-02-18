@@ -3,8 +3,7 @@ import 'package:flutter/material.dart';
 class ConfirmDelDialog extends StatelessWidget {
   final Function onDeleteConfirmed;
 
-  const ConfirmDelDialog({Key? key, required this.onDeleteConfirmed})
-      : super(key: key);
+  const ConfirmDelDialog({super.key, required this.onDeleteConfirmed});
 
   @override
   Widget build(BuildContext context) {

@@ -1,49 +1,46 @@
 import 'package:flutter/material.dart';
 import '/model/task_model.dart';
+import 'repository/repository_sqflite.dart';
 
 class ServiceProvider extends ChangeNotifier {
   bool _switchValue = false;
-  final List<TaskModel> _todoItems = [];
+  final RepositorySqflite _repository = RepositorySqflite();
+  final List<TaskModel> _todoItems = []; // Adicione a lista de tarefas aqui
 
   bool get switchValue => _switchValue;
-  List<TaskModel> get todoItems => _todoItems;
+  List<TaskModel> get todoItems => _todoItems; // Getter para obter a lista
 
-  //metodo para atualizar estado do switch da AppBar
+  // Método para atualizar o estado do switch da AppBar
   void updateSwitchValue(bool value) {
     _switchValue = value;
     notifyListeners();
   }
 
-  //metodo para adicionar tarefas
-  void addTodoItem(String title) {
-    _todoItems.add(TaskModel(title: title));
+  // Método para adicionar tarefas
+  void addTodoItem(String title) async {
+    final newTask = TaskModel(
+      title: title,
+      id: DateTime.now().millisecondsSinceEpoch,
+    );
+    await _repository.insertTask(newTask);
     notifyListeners();
   }
 
-  //metodo para remocao da tarefa
-  void removeTask(int index) {
-    _todoItems.removeAt(index);
+  // Método para remover tarefas
+  void removeTask(TaskModel task) async {
+    await _repository.deleteTask(task.id);
     notifyListeners();
   }
 
-  //metodo para editar a tarefa
-  void editTask(TaskModel oldTask, TaskModel newTask) {
-    final index = _todoItems.indexOf(oldTask);
-    if (index != -1) {
-      _todoItems[index] = newTask;
-      notifyListeners();
-    }
+  // Método para editar tarefas
+  void editTask(TaskModel oldTask, TaskModel newTask) async {
+    await _repository.updateTask(newTask);
+    notifyListeners();
   }
 
-  //metodo para atualizar o estado do switch de cada tarefa
-  void updateTaskCompletion(TaskModel task, bool completed) {
-    final index = _todoItems.indexOf(task);
-    if (index != -1) {
-      _todoItems[index] = TaskModel(
-        title: task.title,
-        completed: completed,
-      );
-      notifyListeners();
-    }
+  // Método para atualizar o estado da conclusão da tarefa
+  void updateTaskCompletion(TaskModel task, bool completed) async {
+    await _repository.updateTaskCompletion(task.id, completed);
+    notifyListeners();
   }
 }

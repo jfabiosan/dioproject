@@ -3,12 +3,12 @@ import 'package:provider/provider.dart';
 import '/dialog/help_dialog.dart';
 import '/dialog/edit_dialog.dart';
 import '/dialog/add_dialog.dart';
-import '/dialog/confirm_del_dialog.dart'; // Importe o arquivo confirm_del_dialog.dart
+import '/dialog/confirm_del_dialog.dart';
 import '/service_provider.dart';
 import '/model/task_model.dart';
 
 class TaskPage extends StatelessWidget {
-  const TaskPage({Key? key}) : super(key: key);
+  const TaskPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -74,7 +74,8 @@ class TaskPage extends StatelessWidget {
                 itemBuilder: (context, index) {
                   final task = visibleTasks[index];
                   return Dismissible(
-                    key: Key(task.title), // Chave única para o Dismissible
+                    key: Key(
+                        task.id.toString()), // Chave única para o Dismissible
                     direction: DismissDirection.horizontal,
                     background: Container(
                       color: Colors.red,
@@ -90,16 +91,15 @@ class TaskPage extends StatelessWidget {
                         builder: (BuildContext context) {
                           return ConfirmDelDialog(
                             onDeleteConfirmed: () {
-                              todoProvider.removeTask(
-                                  index); // Remove a tarefa da lista
+                              todoProvider
+                                  .removeTask(task); // Remove a tarefa da lista
                             },
                           );
                         },
                       );
                     },
                     onDismissed: (direction) {
-                      todoProvider
-                          .removeTask(index); // Remove a tarefa da lista
+                      todoProvider.removeTask(task); // Remove a tarefa da lista
                     },
                     child: TaskListItem(task: task),
                   );
@@ -145,7 +145,7 @@ class TaskSwitch extends StatelessWidget {
 class TaskListItem extends StatelessWidget {
   final TaskModel task;
 
-  const TaskListItem({Key? key, required this.task}) : super(key: key);
+  const TaskListItem({super.key, required this.task});
 
   @override
   Widget build(BuildContext context) {

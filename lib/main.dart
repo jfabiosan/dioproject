@@ -1,9 +1,13 @@
+import 'package:dioproject/repository/database_sqflite.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'page/task_page.dart';
 import 'service_provider.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await DatabaseSqflite
+      .instance.database; // Inicializa o banco de dados SQFlite
   runApp(const MyApp());
 }
 
