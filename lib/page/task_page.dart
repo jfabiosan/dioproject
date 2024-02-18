@@ -46,65 +46,79 @@ class TaskPage extends StatelessWidget {
         padding: const EdgeInsets.only(bottom: 90),
         child: Consumer<ServiceProvider>(
           builder: (context, todoProvider, child) {
-            final bool showCompletedTasks = todoProvider.switchValue;
-            final List<TaskModel> visibleTasks = showCompletedTasks
-                ? todoProvider.todoItems
-                : todoProvider.todoItems
-                    .where((task) => !task.completed)
-                    .toList();
-            if (visibleTasks.isEmpty) {
-              return const Center(
-                child: Card(
-                  margin: EdgeInsets.all(40),
-                  child: Text(
-                    'Clique no botão + para inserir uma nota.',
-                    style: TextStyle(fontSize: 20),
-                    textAlign: TextAlign.center,
-                  ),
-                ),
-              );
-            }
-            //Mostra barra de rolagem na lista
-            return Scrollbar(
-              thickness: 10,
-              thumbVisibility: true,
-              radius: const Radius.circular(12),
-              child: ListView.builder(
-                itemCount: visibleTasks.length,
-                itemBuilder: (context, index) {
-                  final task = visibleTasks[index];
-                  return Dismissible(
-                    key: Key(
-                        task.id.toString()), // Chave única para o Dismissible
-                    direction: DismissDirection.horizontal,
-                    background: Container(
-                      color: Colors.red,
-                      alignment: Alignment.centerLeft,
-                      child: const Icon(
-                        Icons.delete,
-                        color: Colors.white,
+            return FutureBuilder<List<TaskModel>>(
+              future: todoProvider
+                  .getAllTasks(), // Método para buscar todas as tarefas do banco de dados
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  // Se estiver carregando, exiba um indicador de carregamento
+                  return const Center(child: CircularProgressIndicator());
+                } else if (snapshot.hasError) {
+                  // Se ocorrer um erro, exiba uma mensagem de erro
+                  return const Center(
+                      child: Text('Erro ao carregar as tarefas'));
+                } else {
+                  final List<TaskModel> tasks = snapshot.data ?? [];
+                  if (tasks.isEmpty) {
+                    // Se a lista estiver vazia, exiba a mensagem para criar a primeira tarefa
+                    return const Center(
+                      child: Card(
+                        margin: EdgeInsets.all(40),
+                        child: Text(
+                          'Clique no botão + para inserir uma nota.',
+                          style: TextStyle(fontSize: 20),
+                          textAlign: TextAlign.center,
+                        ),
                       ),
-                    ),
-                    confirmDismiss: (direction) async {
-                      return await showDialog<bool>(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return ConfirmDelDialog(
-                            onDeleteConfirmed: () {
-                              todoProvider
-                                  .removeTask(task); // Remove a tarefa da lista
+                    );
+                  } else {
+                    // Se houver tarefas, construa a lista de tarefas visíveis
+                    final bool showCompletedTasks = todoProvider.switchValue;
+                    final List<TaskModel> visibleTasks = showCompletedTasks
+                        ? tasks
+                        : tasks.where((task) => !task.completed).toList();
+                    return Scrollbar(
+                      thickness: 10,
+                      thumbVisibility: true,
+                      radius: const Radius.circular(12),
+                      child: ListView.builder(
+                        itemCount: visibleTasks.length,
+                        itemBuilder: (context, index) {
+                          final task = visibleTasks[index];
+                          return Dismissible(
+                            key: Key(task.id.toString()),
+                            direction: DismissDirection.horizontal,
+                            background: Container(
+                              color: Colors.red,
+                              alignment: Alignment.centerLeft,
+                              child: const Icon(
+                                Icons.delete,
+                                color: Colors.white,
+                              ),
+                            ),
+                            confirmDismiss: (direction) async {
+                              return await showDialog<bool>(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return ConfirmDelDialog(
+                                    onDeleteConfirmed: () {
+                                      todoProvider.removeTask(task);
+                                    },
+                                  );
+                                },
+                              );
                             },
+                            onDismissed: (direction) {
+                              todoProvider.removeTask(task);
+                            },
+                            child: TaskListItem(task: task),
                           );
                         },
-                      );
-                    },
-                    onDismissed: (direction) {
-                      todoProvider.removeTask(task); // Remove a tarefa da lista
-                    },
-                    child: TaskListItem(task: task),
-                  );
-                },
-              ),
+                      ),
+                    );
+                  }
+                }
+              },
             );
           },
         ),

@@ -13,7 +13,7 @@ class ServiceProvider extends ChangeNotifier {
   // Método para atualizar o estado do switch da AppBar
   void updateSwitchValue(bool value) {
     _switchValue = value;
-    notifyListeners();
+    _updateTodoItems();
   }
 
   // Método para adicionar tarefas
@@ -23,24 +23,48 @@ class ServiceProvider extends ChangeNotifier {
       id: DateTime.now().millisecondsSinceEpoch,
     );
     await _repository.insertTask(newTask);
-    notifyListeners();
+    _updateTodoItems();
   }
 
   // Método para remover tarefas
   void removeTask(TaskModel task) async {
     await _repository.deleteTask(task.id);
-    notifyListeners();
+    _updateTodoItems();
   }
 
   // Método para editar tarefas
   void editTask(TaskModel oldTask, TaskModel newTask) async {
     await _repository.updateTask(newTask);
-    notifyListeners();
+    _updateTodoItems();
   }
 
   // Método para atualizar o estado da conclusão da tarefa
   void updateTaskCompletion(TaskModel task, bool completed) async {
     await _repository.updateTaskCompletion(task.id, completed);
+    _updateTodoItems();
+  }
+
+  // Método para obter todas as tarefas do banco de dados
+  Future<List<TaskModel>> getAllTasks() async {
+    try {
+      return await _repository.getAllTasks();
+    } catch (e) {
+      // Tratamento de erro adequado, se necessário
+      debugPrint('Erro ao buscar todas as tarefas: $e');
+      return []; // Retorna uma lista vazia em caso de erro
+    }
+  }
+
+// Método privado para atualizar a lista de tarefas
+  void _updateTodoItems() async {
+    // Obter a lista mais recente de tarefas do banco de dados
+    List<TaskModel> updatedTasks = await _repository.getAllTasks();
+
+    // Atualizar o estado com a lista atualizada
+    _todoItems.clear();
+    _todoItems.addAll(updatedTasks);
+
+    // Notificar os ouvintes de que o estado foi alterado
     notifyListeners();
   }
 }
