@@ -1,5 +1,5 @@
-import 'package:dioproject/page/splash_page.dart';
-import 'package:dioproject/repository/database_sqflite.dart';
+import 'package:zionnote/page/splash_page.dart';
+import 'package:zionnote/repository/database_sqflite.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'service_provider.dart';

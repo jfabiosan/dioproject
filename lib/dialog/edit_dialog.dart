@@ -1,4 +1,4 @@
-import 'package:dioproject/service_provider.dart';
+import 'package:zionnote/service_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '/model/task_model.dart';
