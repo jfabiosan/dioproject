@@ -7,8 +7,8 @@ import '/dialog/confirm_del_dialog.dart';
 import '/service_provider.dart';
 import '/model/task_model.dart';
 
-class TaskPage extends StatelessWidget {
-  const TaskPage({super.key});
+class MainPage extends StatelessWidget {
+  const MainPage({super.key});
 
   @override
   Widget build(BuildContext context) {
