@@ -22,7 +22,16 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
           primarySwatch: Colors.blue,
-          appBarTheme: const AppBarTheme(backgroundColor: Colors.orange),
+          appBarTheme: const AppBarTheme(
+            backgroundColor: Colors.orange,
+            toolbarHeight: 70.0,
+            shape: ContinuousRectangleBorder(
+              borderRadius: BorderRadius.only(
+                bottomLeft: Radius.circular(30),
+                bottomRight: Radius.circular(30),
+              ),
+            ),
+          ),
         ),
         home: const SplashPage(),
       ),

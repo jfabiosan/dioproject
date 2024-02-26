@@ -17,13 +17,6 @@ class MainPage extends StatelessWidget {
       child: Scaffold(
         drawer: MenuDrawer.buildDrawer(context),
         appBar: AppBar(
-          toolbarHeight: 70.0,
-          shape: const ContinuousRectangleBorder(
-            borderRadius: BorderRadius.only(
-              bottomLeft: Radius.circular(30),
-              bottomRight: Radius.circular(30),
-            ),
-          ),
           title: const Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [

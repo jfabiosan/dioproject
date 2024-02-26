@@ -1,5 +1,7 @@
 import "package:flutter/material.dart";
 
+import "page/create_backup_page.dart";
+
 class MenuDrawer {
   static Widget buildDrawer(BuildContext context) {
     return Drawer(
@@ -10,7 +12,14 @@ class MenuDrawer {
           children: [
             InkWell(
               child: const Text("Criar backup"),
-              onTap: () {},
+              onTap: () {
+                Navigator.pop(context);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const CreateBackupPage()),
+                );
+              },
             ),
             const Divider(),
             const SizedBox(height: 18),
