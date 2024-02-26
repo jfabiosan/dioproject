@@ -20,9 +20,9 @@ class MyApp extends StatelessWidget {
       create: (context) => ServiceProvider(),
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        title: 'Flash Note',
         theme: ThemeData(
           primarySwatch: Colors.blue,
+          appBarTheme: const AppBarTheme(backgroundColor: Colors.orange),
         ),
         home: const SplashPage(),
       ),

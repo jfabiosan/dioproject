@@ -10,7 +10,7 @@ class AddDialog {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text('Adicionar Tarefa'),
+          title: const Text('Adicionar Nota'),
           content: TextField(
             textCapitalization: TextCapitalization.words,
             controller: textFieldController,

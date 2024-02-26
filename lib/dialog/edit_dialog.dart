@@ -14,7 +14,7 @@ class EditDialog extends StatelessWidget {
         TextEditingController(text: task.title);
 
     return AlertDialog(
-      title: const Text('Editar Tarefa'),
+      title: const Text('Editar Nota'),
       content: TextField(
         controller: textFieldController,
         decoration: const InputDecoration(hintText: "Digite o novo título"),
