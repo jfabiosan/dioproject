@@ -12,6 +12,7 @@ class AddDialog {
         return AlertDialog(
           title: const Text('Adicionar Tarefa'),
           content: TextField(
+            textCapitalization: TextCapitalization.words,
             controller: textFieldController,
             decoration: const InputDecoration(hintText: "Digite o título"),
           ),
