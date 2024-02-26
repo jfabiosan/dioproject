@@ -21,13 +21,18 @@ class TaskPage extends StatelessWidget {
             bottomRight: Radius.circular(30),
           ),
         ),
-        backgroundColor: Colors.blueGrey,
-        title: const Text(
-          'Flash Note',
-          style: TextStyle(
-            fontSize: 28,
-            color: Colors.white,
-          ),
+        backgroundColor: Colors.orange,
+        title: const Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            Text(
+              'Flash Note',
+              style: TextStyle(
+                fontSize: 28,
+                color: Colors.white,
+              ),
+            ),
+          ],
         ),
         actions: [
           IconButton(
@@ -142,13 +147,19 @@ class TaskSwitch extends StatelessWidget {
   Widget build(BuildContext context) {
     return Consumer<ServiceProvider>(
       builder: (context, todoProvider, child) {
-        return Switch(
-          activeColor: Colors.white,
-          activeTrackColor: Colors.deepOrangeAccent,
-          value: todoProvider.switchValue,
-          onChanged: (value) {
-            todoProvider.updateSwitchValue(value);
-          },
+        // altera o tamanho do switch com widget Transform.scale
+        return Transform.scale(
+          scale: 0.8,
+          child: Switch(
+            activeColor: Colors.white,
+            activeTrackColor: Colors.deepOrangeAccent,
+            inactiveThumbColor: Colors.white,
+            inactiveTrackColor: const Color.fromARGB(255, 124, 124, 124),
+            value: todoProvider.switchValue,
+            onChanged: (value) {
+              todoProvider.updateSwitchValue(value);
+            },
+          ),
         );
       },
     );
@@ -182,14 +193,20 @@ class TaskListItem extends StatelessWidget {
               icon: const Icon(Icons.edit),
             ),
             //Switch das tarefas
-            Switch(
-              activeColor: Colors.white,
-              activeTrackColor: Colors.deepOrangeAccent,
-              value: task.completed,
-              onChanged: (value) {
-                Provider.of<ServiceProvider>(context, listen: false)
-                    .updateTaskCompletion(task, value);
-              },
+            // altera o tamanho do switch com widget Transform.scale
+            Transform.scale(
+              scale: 0.8,
+              child: Switch(
+                activeColor: Colors.white,
+                activeTrackColor: Colors.deepOrangeAccent,
+                inactiveThumbColor: Colors.white,
+                inactiveTrackColor: const Color.fromARGB(255, 124, 124, 124),
+                value: task.completed,
+                onChanged: (value) {
+                  Provider.of<ServiceProvider>(context, listen: false)
+                      .updateTaskCompletion(task, value);
+                },
+              ),
             ),
           ],
         ),
