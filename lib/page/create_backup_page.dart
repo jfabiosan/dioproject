@@ -1,9 +1,11 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:path/path.dart';
-import 'package:path_provider/path_provider.dart';
-import 'dart:io';
+import 'package:sqflite/sqflite.dart';
+
+import '/repository/database_sqflite.dart';
 
 class CreateBackupPage extends StatefulWidget {
   const CreateBackupPage({super.key});
@@ -17,54 +19,44 @@ class _CreateBackupPageState extends State<CreateBackupPage> {
   String? _backupDirectory;
   late DateTime now;
   late String horaFormatada;
-  late String _dbPath;
-  late final GlobalKey<ScaffoldMessengerState> _scaffoldKey;
 
   @override
   void initState() {
     super.initState();
-    _scaffoldKey = GlobalKey<ScaffoldMessengerState>();
     // Obtém a data e hora atual
     now = DateTime.now();
     // Formata apenas a hora em formato de números sem pontos
     horaFormatada = DateFormat('ddHHmmssyy').format(now);
     // Definir o nome do arquivo de backup com data e hora atual
-    _backupFileName = 'bkp_$horaFormatada.csv';
-
-    // Obtém o caminho do banco de dados
-    _initializeDatabase();
+    _backupFileName = 'bkp_$horaFormatada.db';
   }
 
-  Future<void> _initializeDatabase() async {
-    // Obtém o diretório de documentos do dispositivo
-    Directory documentsDirectory = await getApplicationDocumentsDirectory();
-    _dbPath = join(documentsDirectory.path, 'todos.db');
-  }
+  Future<void> salvarBackup(ScaffoldMessengerState scaffoldMessenger) async {
+    try {
+      // Fechar o banco de dados, se estiver aberto
+      final db = await DatabaseSqflite.instance.database;
+      await db.close();
 
-  Future<void> _saveBackup() async {
-    if (!File(_dbPath).existsSync()) {
-      _scaffoldKey.currentState?.showSnackBar(
-        const SnackBar(content: Text('Banco de dados não encontrado!')),
+      final originalDbPath = await getDatabasesPath();
+      final originalDbFile = File(join(originalDbPath, 'todo.db'));
+
+      // Criar o arquivo "todo.db"
+      await originalDbFile.create(recursive: true);
+
+      // Copiar o arquivo para o diretório escolhido
+      final backupDirectory = Directory(_backupDirectory!);
+      final backupPath = join(backupDirectory.path, _backupFileName);
+      await originalDbFile.copy(backupPath);
+
+      const snackBar = SnackBar(
+        content: Text('Backup salvo com sucesso!'),
       );
-      return;
-    }
-
-    String? directory = _backupDirectory;
-
-    if (directory != null) {
-      try {
-        //basename(_dbPath);
-        String backupFilePath = join(directory, _backupFileName);
-        await File(_dbPath).copy(backupFilePath);
-
-        _scaffoldKey.currentState?.showSnackBar(
-          const SnackBar(content: Text('Backup salvo com sucesso!')),
-        );
-      } catch (e) {
-        _scaffoldKey.currentState?.showSnackBar(
-          SnackBar(content: Text('Erro ao salvar backup: $e')),
-        );
-      }
+      scaffoldMessenger.showSnackBar(snackBar);
+    } catch (error) {
+      final snackBar = SnackBar(
+        content: Text('Falha ao salvar backup: $error'),
+      );
+      scaffoldMessenger.showSnackBar(snackBar);
     }
   }
 
@@ -109,7 +101,7 @@ class _CreateBackupPageState extends State<CreateBackupPage> {
             const SizedBox(height: 20),
             ElevatedButton(
               // Implemente a lógica para salvar o backup
-              onPressed: _saveBackup,
+              onPressed: () => salvarBackup(ScaffoldMessenger.of(context)),
               child: const Text('Salvar'),
             ),
           ],
