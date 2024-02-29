@@ -55,7 +55,7 @@ class ServiceProvider extends ChangeNotifier {
     }
   }
 
-// Método privado para atualizar a lista de tarefas
+  // Método privado para atualizar a lista de tarefas
   void _updateTodoItems() async {
     // Obter a lista mais recente de tarefas do banco de dados
     List<TaskModel> updatedTasks = await _repository.getAllTasks();
