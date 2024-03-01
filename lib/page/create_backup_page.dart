@@ -4,7 +4,6 @@ import 'package:file_picker/file_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
-//import '/repository/database_sqflite.dart';
 import '/permission_directory.dart';
 
 class CreateBackupPage extends StatefulWidget {
@@ -33,6 +32,7 @@ class _CreateBackupPageState extends State<CreateBackupPage> {
 
   Future<void> salvarBackup(ScaffoldMessengerState scaffoldMessenger) async {
     try {
+      //pacote permission_handler para dar permisao de escrita no diretorio do device
       bool permissionGranted = await requestExternalStoragePermission();
       if (!permissionGranted) {
         scaffoldMessenger.showSnackBar(const SnackBar(
@@ -40,10 +40,6 @@ class _CreateBackupPageState extends State<CreateBackupPage> {
         ));
         return;
       }
-      // Fechar o banco de dados, se estiver aberto
-      //final db = await DatabaseSqflite.instance.database;
-      //await db.close();
-
       final originalDbPath = await getDatabasesPath();
       final originalDbFile = File(join(originalDbPath, 'todo.db'));
 
