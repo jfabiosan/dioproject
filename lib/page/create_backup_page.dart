@@ -52,11 +52,13 @@ class _CreateBackupPageState extends State<CreateBackupPage> {
       await originalDbFile.copy(backupPath);
 
       const snackBar = SnackBar(
+        backgroundColor: Colors.green,
         content: Text('Backup salvo com sucesso!'),
       );
       scaffoldMessenger.showSnackBar(snackBar);
     } catch (error) {
       final snackBar = SnackBar(
+        backgroundColor: Colors.red,
         content: Text('Falha ao salvar backup: $error'),
       );
       scaffoldMessenger.showSnackBar(snackBar);
@@ -67,13 +69,14 @@ class _CreateBackupPageState extends State<CreateBackupPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-          title: const Text(
-        'Criar Backup',
-        style: TextStyle(
-          fontSize: 28,
-          color: Colors.white,
+        title: const Text(
+          'Criar Backup',
+          style: TextStyle(
+            fontSize: 28,
+            color: Colors.white,
+          ),
         ),
-      )),
+      ),
       body: Padding(
         padding: const EdgeInsets.all(20.0),
         child: Column(

@@ -12,7 +12,13 @@ class _RestoreBackupPageState extends State<RestoreBackupPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Restaurar Backup'),
+        title: const Text(
+          'Restaurar Backup',
+          style: TextStyle(
+            fontSize: 28,
+            color: Colors.white,
+          ),
+        ),
       ),
     );
   }
